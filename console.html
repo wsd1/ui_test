@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SVG Console Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="http://pengxwang.s3.amazonaws.com/codepen/device-1.png">
+</head>
+<style>
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.card-skin {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: .3rem;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 0 1px white;
+    padding: 1rem;
+}
+
+.centered,
+.device {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.clearfix:before,
+.clearfix:after,
+html.no-flexbox .device .buttons-panel nav.inside:before,
+.device .buttons-panel html.no-flexbox nav.inside:before,
+html.no-flexbox .device .buttons-panel nav.inside:after,
+.device .buttons-panel html.no-flexbox nav.inside:after {
+    content: ' ';
+    display: table;
+}
+
+.clearfix:after,
+html.no-flexbox .device .buttons-panel nav.inside:after,
+.device .buttons-panel html.no-flexbox nav.inside:after {
+    clear: both;
+}
+
+.clearfix,
+html.no-flexbox .device .buttons-panel nav.inside,
+.device .buttons-panel html.no-flexbox nav.inside {
+    *zoom: 1;
+}
+
+.disabled-mobile-interactions,
+.device * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.show-on-ready {
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+}
+
+.show-on-ready[data-ready],
+.show-on-ready.ready {
+    opacity: 1;
+}
+
+.debug {
+    border: 1px solid red;
+}
+
+.invisible {
+    opacity: 0;
+    position: absolute;
+    z-index: -9999;
+}
+
+.helper-button {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    outline: 0;
+    padding: .5em .7em;
+}
+
+.helper-button:hover {
+    border-color: rgba(0, 0, 0, 0.25);
+}
+
+.markdown {
+    font-family: 'Helvetica', sans-serif;
+    padding: 1rem 2rem;
+}
+
+.markdown li,
+.markdown blockquote,
+.markdown p {
+    line-height: 1.333;
+}
+
+.markdown blockquote {
+    border-left: 4px solid rgba(0, 0, 0, 0.1);
+    margin-left: 18px;
+    padding-left: 18px;
+}
+
+.markdown figure {
+    margin: 0;
+}
+
+.markdown hr {
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 0;
+    height: 1px;
+    margin: 2rem 0;
+}
+
+.markdown code,
+.markdown pre {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.markdown code {
+    padding: .2em .3em;
+}
+
+.markdown pre {
+    font-size: .9rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    padding: 1rem;
+}
+
+.markdown pre code {
+    background: transparent;
+    padding: 0;
+}
+
+.markdown pre:hover,
+.markdown pre:focus {
+    min-width: min-content;
+}
+
+.markdown .pass {
+    color: green;
+}
+
+.markdown .fail {
+    color: red;
+}
+
+.console > div::before {
+    content: '> ';
+}
+
+.swatches {
+    font-size: 0;
+}
+
+.swatches > [data-color] {
+    border: 1px solid transparent;
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+}
+
+.swatches > [data-color]:hover {
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-palette=prussian-blues] [data-color=dark] {
+    background: #003153;
+}
+
+[data-palette=prussian-blues] [data-color=dark-medium] {
+    background: #004880;
+}
+
+[data-palette=prussian-blues] [data-color=medium] {
+    background: #005eaf;
+}
+
+[data-palette=prussian-blues] [data-color=medium-light] {
+    background: #2090df;
+}
+
+[data-palette=prussian-blues] [data-color=light] {
+    background: #40d0ff;
+}
+
+[data-palette=prussian-blues] [data-color=light-white] {
+    background: #aadfea;
+}
+
+[data-palette=prussian-blues] [data-color=white] {
+    background: #efefd0;
+}
+
+.device .buttons-panel nav.inside > button {
+    display: block;
+    line-height: 1;
+    margin-right: 11px;
+}
+
+.device .buttons-panel nav.inside > button:last-child {
+    margin-right: 0;
+}
+
+html.no-flexbox .device .buttons-panel nav.inside,
+.device .buttons-panel html.no-flexbox nav.inside {
+    display: block;
+}
+
+html.no-flexbox .device .buttons-panel nav.inside > button,
+.device .buttons-panel html.no-flexbox nav.inside > button {
+    float: left;
+}
+
+html.flexbox .device .buttons-panel nav.inside,
+.device .buttons-panel html.flexbox nav.inside {
+    display: flex;
+}
+
+html.flexbox .device .buttons-panel nav.inside > button,
+.device .buttons-panel html.flexbox nav.inside > button {
+    flex: 1 1 auto;
+}
+
+.device .buttons-panel nav.inside button {
+    background-color: #bbb;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), transparent);
+    border: 0;
+    border-radius: 7px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), inset 0 0 15px rgba(0, 0, 0, 0.2), 0 2px 0 #6f6f6f, 0 3px 0 #3c3c3c, 0 2px 3px 1px rgba(0, 0, 0, 0.5);
+    color: #666;
+    cursor: pointer;
+    font-weight: bold;
+    outline: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: color .2s ease-in-out;
+}
+
+.device .buttons-panel nav.inside button.hover,
+.device .buttons-panel nav.inside button:hover {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.9), transparent);
+    color: #08f;
+}
+
+.device .buttons-panel nav.inside button.active,
+.device .buttons-panel nav.inside button:active {
+    background-color: #a2a2a2;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), transparent);
+    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2), inset 0 2px 3px 1px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(0, 0, 0, 0.1), 0 -2px 0 #2b2b2b, 0 0 0 1px #444444;
+    margin-bottom: -2px;
+    margin-top: 1px;
+}
+
+.device .main-screen {
+    background-color: #111;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+    border-color: transparent;
+    border-style: solid;
+    border-width: 2px 1px 0;
+    border-radius: 7px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 100px rgba(0, 0, 0, 0.5), 0 0 2px rgba(255, 255, 255, 0.8), 0 0 7px 1px rgba(255, 255, 255, 0.8);
+}
+
+.device .main-screen > .body {
+    color: #0f0;
+    font: 15px/1.7 'Menlo', 'Consolas', monospace;
+    padding: 15px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.9);
+}
+
+.device .main-screen .power-button .dot {
+    fill: #0f0;
+}
+
+.device .main-screen .power-button .ring {
+    fill: none;
+    stroke: #0f0;
+}
+
+.device .main-screen .shape {
+    fill: none;
+    stroke: #0f0;
+    strokeWeight: 2;
+}
+
+.device .main-screen > .tint {
+    background-image: linear-gradient(145deg, #fff 150px, rgba(255, 255, 255, 0.5) 154px, transparent 330px);
+    border-radius: 6px;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.8), inset 67.5px -142.5px 142.5px rgba(0, 0, 0, 0.8);
+    opacity: .3;
+    transition: opacity .3s ease-in-out;
+}
+
+.device .main-screen > .scanlines {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAD0lEQVQYV2NgYGAwZgABAAE8ADSqC3qCAAAAAElFTkSuQmCC");
+    border-radius: 6px;
+    margin: 1px;
+}
+
+.device .hover.main-screen > .tint,
+.device .main-screen:hover > .tint {
+    opacity: 0;
+}
+
+.device .main-screen .cursor {
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(1);
+}
+
+.static .device .main-screen .cursor,
+.device .static .main-screen .cursor {
+    animation-play-state: paused;
+}
+
+.device > .body {
+    background-color: #bbb;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), transparent 190px), url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFUlEQVQYV2NkYGCQZGBgeM7IAAGSAAqqARzZRIhzAAAAAElFTkSuQmCC");
+    border-radius: 15px;
+}
+
+.device .buttons-panel {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.device .buttons-panel .cover {
+    background: #bbb url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFUlEQVQYV2NkYGCQZGBgeM7IAAGSAAqqARzZRIhzAAAAAElFTkSuQmCC") repeat;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    padding-top: 1px;
+}
+
+.device .buttons-panel .cover .symbol {
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3), inset 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 1px 1px rgba(0, 0, 0, 0.1);
+    color: #aaa;
+    font: bold 56px Helvetica, sans-serif;
+    text-align: center;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.device .buttons-panel .inside {
+    background: #777 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAYAAABLLYUHAAAAGklEQVQIW2NkQAKMMPb///+N4RygoA8yhwEAYOgDgYLmjHMAAAAASUVORK5CYII=");
+    box-shadow: inset 0 1px 15px rgba(0, 0, 0, 0.5), inset 0 2px 0 #6a6a6a, inset 0 3px 0 #515151;
+}
+
+.device .buttons-panel .inside border {
+    color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.4) rgba(255, 255, 255, 0.8);
+    style: solid;
+    width: 2px 1px 1px;
+}
+
+.device .buttons-panel .cover.open {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 0, 0, 0.8), 0 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.device .buttons-panel .cover {
+    transition-property: box-shadow, transform;
+    transition-duration: .4s;
+    will-change: box-shadow, transform;
+}
+
+.device .buttons-panel .cover.open {
+    transform: translateX(-295px);
+    transition-timing-function: cubic-bezier(0.8, 0, 0.2, 1.1);
+}
+
+.device .buttons-panel .cover.closed {
+    transform: translateX(0);
+    transition-timing-function: cubic-bezier(0.9, 0, 0.1, 1);
+}
+
+body {
+    background: #eee url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAPElEQVQYV2OcNWuWDyMj4/P///9LpqWlbWGcOXOmJAMUpKenP2ecPXu28b9//54xMTFJpaamnmWEycJoAFZbFAVaNOxjAAAAAElFTkSuQmCC") repeat;
+}
+
+body > .container {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent, rgba(0, 0, 0, 0.2));
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+.device {
+    height: 300px;
+    text-align: left;
+    width: 300px;
+}
+
+.device::selection {
+    background: transparent;
+}
+
+.device > .body {
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3), inset 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 #7b7b7b, 0 3px 0 #888888, 0 4px 0 #6f6f6f, 0 12px 20px 2px rgba(0, 0, 0, 0.4);
+    padding: 15px 0;
+    transform: translateY(-30%) scale(1.1);
+    transition: box-shadow 0.2s ease-out 0.2s, transform 0.6s cubic-bezier(0, 0.9, 0.3, 1);
+    will-change: box-shadow, transform;
+}
+
+.device.ready > .body {
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3), inset 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 #7b7b7b, 0 3px 0 #888888, 0 4px 0 #6f6f6f, 0 3px 10px rgba(0, 0, 0, 0.8);
+    transform: translateY(0) scale(1);
+}
+
+.device .buttons-panel {
+    margin-bottom: 15px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out 0.6s;
+}
+
+.device.ready .buttons-panel {
+    opacity: 1;
+}
+
+.device .main-screen {
+    height: 190px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    position: relative;
+}
+
+.device .buttons-panel {
+    position: relative;
+}
+
+.device .buttons-panel .cover {
+    height: 46px;
+    line-height: 46px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+}
+
+.device .buttons-panel .cover .symbol {
+    line-height: 46px;
+    margin-top: -10px;
+    padding: 10px 0;
+}
+
+.device .buttons-panel nav.inside {
+    padding: 10px 15px 12px;
+}
+
+.device .buttons-panel nav.inside button {
+    padding: 6px 10px 5px;
+}
+
+.device .main-screen {
+    line-height: 0;
+    overflow: scroll;
+}
+
+.device .main-screen > .body {
+    cursor: crosshair;
+    padding: 15px;
+}
+
+.device .main-screen > .body .cli input.invisible {
+    position: fixed;
+}
+
+.device .main-screen > .body .canvas {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.device .main-screen > .scanlines,
+.device .main-screen > .tint {
+    height: 188px;
+    position: fixed;
+    width: 268px;
+}
+
+html.no-touch .device .main-screen > .scanlines {
+    z-index: 9;
+}
+
+html.no-touch .device .main-screen > .tint {
+    z-index: 10;
+}
+
+html.no-touch .device .main-screen:hover > .body .canvas {
+    z-index: 20;
+}
+</style>
+
+<body>
+
+<h1>From: <a href="http://codepen.io/hlfcoding/pen/GZvjXp">http://codepen.io/hlfcoding/pen/GZvjXp</a></h1>
+<div class="container">
+
+<div class="device">
+  <div class="body">
+    <div class="main-screen">
+      <div class="tint"></div>
+      <div class="scanlines"></div>
+      <div class="body">
+        <div class="cli" data-module="cli"></div>
+        <svg id="snap-svg-1" class="canvas" data-module="canvas"></svg>
+      </div>
+    </div><!--/main-screen-->
+    <div class="buttons-panel" data-module="slide-panel">
+      <div class="cover"><div class="symbol">&middot;</div></div>
+      <nav class="inside">
+        <button name="A" type="button">A</button>
+        <button name="B" type="button">B</button>
+        <button name="C" type="button">C</button>
+        <button name="D" type="button">D</button>
+      </nav>
+    </div><!--/btn-panel-->
+  </div><!--/device-body-->
+</div><!--/device-->
+
+</div><!--/container-->
+
+
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+    <script>
+    (function() {
+        var createCLI, createGameState, createGreetState, createOffState, createPowerButton, createShapeDrawer, initButtons, initMainScreen, initSlidePanel, isTouch, ref, ref1, ref2, ref3, ref4, ref5, ref6, test,
+            slice = [].slice;
+
+        console.clear();
+
+        test = function(name, run, fn) {
+            var ok, subject, wrapped;
+            if (name in window) {
+                subject = window[name];
+            }
+            ok = function(assertion) {
+                console.assert(assertion);
+                if (assertion) {
+                    console.log('ok');
+                }
+            };
+            wrapped = function() {
+                console.group(name);
+                try {
+                    fn(subject, ok);
+                } finally {
+                    console.groupEnd();
+                }
+            };
+            if (run) {
+                setTimeout(wrapped);
+            }
+            subject._test = wrapped;
+        };
+
+        window.commonHelpers = {
+            fixActiveStateForTouch: function(el) {
+                return el.addEventListener('touchstart', (function() {}), false);
+            }
+        };
+
+        if (typeof $ !== "undefined" && $ !== null) {
+            if ((ref = $.fn) != null) {
+                ref.animateChars = function(delegate) {
+                    var chars, completion, ms, step;
+                    completion = resolveCompletion(delegate.completion);
+                    chars = delegate.string.split('');
+                    ms = delegate.stepDuration || 30;
+                    step = (function(_this) {
+                        return function() {
+                            if (!chars.length) {
+                                return completion();
+                            }
+                            _this.text(_this.text() + chars.shift());
+                            delay(ms, function() {
+                                return requestAnimationFrame(step);
+                            });
+                        };
+                    })(this);
+                    requestAnimationFrame(step);
+                    return this;
+                };
+            }
+        }
+
+        if (typeof $ !== "undefined" && $ !== null) {
+            if ((ref1 = $.fn) != null) {
+                ref1.center = function() {
+                    return {
+                        x: this.innerWidth() / 2,
+                        y: this.innerHeight() / 2
+                    };
+                };
+            }
+        }
+
+        if (typeof $ !== "undefined" && $ !== null) {
+            if ((ref2 = $.fn) != null) {
+                ref2.cssDuration = function(type) {
+                    var convert;
+                    convert = function(s) {
+                        return parseInt(parseFloat(s) * 1000);
+                    };
+                    switch (type) {
+                        case 'transition':
+                            return convert(this.css('transition-duration'));
+                        default:
+                            return console.warn('unsupported');
+                    }
+                };
+            }
+        }
+
+        if (typeof $ !== "undefined" && $ !== null) {
+            if ((ref3 = $.fn) != null) {
+                ref3.innerSize = function() {
+                    return {
+                        h: this.innerHeight(),
+                        w: this.innerWidth()
+                    };
+                };
+            }
+        }
+
+        if (typeof $ !== "undefined" && $ !== null) {
+            if ((ref4 = $.fn) != null) {
+                ref4.keyboardHandling = function(obj) {
+                    var backspaceKey, delegate, deleteKey, enterKey, getChar;
+                    if (obj === false) {
+                        return this.off('keydown.common change.common');
+                    }
+                    delegate = obj;
+                    backspaceKey = 8;
+                    deleteKey = 46;
+                    enterKey = 13;
+                    getChar = (function(_this) {
+                        return function() {
+                            return _this.val().replace(_this.data('oldValue') || '', '');
+                        };
+                    })(this);
+                    return this.on('keydown.common', (function(_this) {
+                        return function(e) {
+                            var key;
+                            key = e.keyCode;
+                            switch (key) {
+                                case backspaceKey:
+                                case deleteKey:
+                                    delegate.onDelete();
+                                    break;
+                                case enterKey:
+                                    delegate.onEnter();
+                                    return false;
+                                default:
+                                    delay(0, function() {
+                                        return delegate.onChar(getChar());
+                                    });
+                            }
+                            _this.data('oldValue', _this.val());
+                        };
+                    })(this));
+                };
+            }
+        }
+
+        if (typeof $ !== "undefined" && $ !== null) {
+            if ((ref5 = $.fn) != null) {
+                ref5.wait = function() {
+                    var args, dataKey, deferred, delay, id, isGet, promise;
+                    args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+                    dataKey = function(id) {
+                        return "wait-" + id + "-promise";
+                    };
+                    isGet = args.length === 1;
+                    if (isGet) {
+                        id = args[0];
+                    } else {
+                        delay = args[0], id = args[1];
+                        deferred = $.Deferred();
+                        promise = deferred.promise();
+                        this.data(dataKey(id), promise);
+                        setTimeout((function() {
+                            return deferred.resolve();
+                        }), delay);
+                    }
+                    return this.data(dataKey(id));
+                };
+            }
+        }
+
+        if (typeof $ !== "undefined" && $ !== null) {
+            if ((ref6 = $.fn) != null) {
+                ref6.isWaiting = function(waitId) {
+                    var wait;
+                    wait = this.wait(waitId);
+                    return (wait != null) && wait.state() !== 'resolved';
+                };
+            }
+        }
+
+        window.delay = function(duration, completion) {
+            return setTimeout(resolveCompletion(completion), duration);
+        };
+
+        window.delayed = function(duration, completion) {
+            return function() {
+                delay(duration, completion);
+            };
+        };
+
+        if ((typeof $ !== "undefined" && $ !== null ? $.Deferred : void 0) != null) {
+            window.delayDeferred = function() {
+                var args, deferred, duration, ref7, ref8;
+                duration = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+                deferred = $.Deferred();
+                deferred.reject = (ref7 = deferred.reject).bind.apply(ref7, [deferred].concat(slice.call(args)));
+                deferred.resolve = (ref8 = deferred.resolve).bind.apply(ref8, [deferred].concat(slice.call(args)));
+                delay(duration, deferred);
+                return deferred;
+            };
+        }
+
+        window.resolveCompletion = function(obj) {
+            if (obj.resolve != null) {
+                return obj.resolve.bind(obj);
+            }
+            if (typeof obj === 'function') {
+                return obj;
+            }
+            throw 'unsupported input';
+        };
+
+        test('resolveCompletion', true, function(subject, ok) {
+            var callback, deferred;
+            callback = function() {};
+            deferred = $.Deferred();
+            ok(subject(callback) === callback);
+            return ok(typeof subject(deferred) === 'function');
+        });
+
+        window.showOnReady = function(completion) {
+            var ref7;
+            if (completion == null) {
+                completion = null;
+            }
+            if ((typeof $ !== "undefined" && $ !== null ? (ref7 = $.fn) != null ? ref7.ready : void 0 : void 0) != null) {
+                return $(function() {
+                    $('.show-on-ready').attr('data-ready', '');
+                    return typeof completion === "function" ? completion() : void 0;
+                });
+            } else {
+                return document.onreadystatechange = function() {
+                    if (document.readyState !== 'complete') {
+                        return;
+                    }
+                    Array.from(document.getElementsByClassName('show-on-ready')).forEach(function(el) {
+                        return el.setAttribute('data-ready', '');
+                    });
+                    return typeof completion === "function" ? completion() : void 0;
+                };
+            }
+        };
+
+        window.mixins = {
+            debug: {
+                _logCleared: true,
+                log: function() {
+                    var args, label;
+                    if (!this.debug) {
+                        return;
+                    }
+                    if (!this._logCleared) {
+                        console.clear();
+                        this._logCleared = true;
+                    }
+                    args = Array.from(arguments);
+                    label = args.shift();
+                    console.log(label, args);
+                }
+            }
+        };
+
+        window.createStateMachine = function() {
+            var active, leaveActiveStateFor, states;
+            states = [];
+            states._activeState = null;
+            active = function() {
+                return states._activeState;
+            };
+            leaveActiveStateFor = function(next) {
+                var completion, promise;
+                promise = active().leave();
+                completion = function() {
+                    states._activeState = null;
+                    return states.to(next);
+                };
+                if (promise != null) {
+                    promise.then(completion);
+                } else {
+                    completion();
+                }
+            };
+            states.to = function(nameOrState) {
+                var name, s;
+                if (active() != null) {
+                    return leaveActiveStateFor(nameOrState);
+                }
+                states._activeState = typeof nameOrState === 'string' ? (name = nameOrState, ((function() {
+                    var j, len, results;
+                    results = [];
+                    for (j = 0, len = states.length; j < len; j++) {
+                        s = states[j];
+                        if (s.name === name) {
+                            results.push(s);
+                        }
+                    }
+                    return results;
+                })())[0]) : nameOrState;
+                active().enter();
+            };
+            states.next = function() {
+                var i;
+                i = states.indexOf(active());
+                if (i === -1) {
+                    throw 'bad index';
+                }
+                i = states.length - 1 <= i ? 0 : i + 1;
+                leaveActiveStateFor(states[i]);
+            };
+            return states;
+        };
+
+        test('createStateMachine', false, function(subject, ok) {
+            var states;
+            states = subject();
+            states.push({
+                name: 'first',
+                enter: function() {
+                    return console.log('first:enter');
+                },
+                leave: function() {
+                    return console.log('first:leave');
+                }
+            });
+            states.to('first');
+            ok(states._activeState.name === 'first');
+            states.push({
+                name: 'second',
+                enter: function() {
+                    return console.log('second:enter');
+                },
+                leave: function() {
+                    return console.log('second:leave');
+                }
+            });
+            states.next();
+            ok(states._activeState.name === 'second');
+            states.next();
+            return ok(states._activeState.name === 'first');
+        });
+
+        isTouch = Modernizr.isTouch;
+
+        $(function() {
+            var $root, api, buttons, normalScaleWait, slidePanel;
+            $root = $('.device');
+            $root.addClass('ready');
+            buttons = initButtons($root);
+            slidePanel = initSlidePanel($root);
+            normalScaleWait = $root.find('.body').cssDuration('transition') + 300;
+            delay(normalScaleWait, function() {
+                return api.mainScreen = initMainScreen($root);
+            });
+            return api = {
+                buttons: buttons,
+                slidePanel: slidePanel
+            };
+        });
+
+        createGameState = function(arg) {
+            var $context, buttonShapes, cli, paper, shapes, states;
+            states = arg.states, shapes = arg.shapes, paper = arg.paper, cli = arg.cli, $context = arg.$context;
+            buttonShapes = {
+                A: 'triangle',
+                B: 'square',
+                C: 'circle',
+                D: 'semicircle'
+            };
+            return {
+                name: 'game',
+                enter: function() {
+                    var drawn;
+                    delay(0, function() {
+                        return $context.trigger('slide-panel:toggle', true);
+                    });
+                    drawn = 0;
+                    $context.on('click.shape', '[type=button]', function(e) {
+                        var $button;
+                        if (drawn >= 10) {
+                            return states.next();
+                        }
+                        drawn += 1;
+                        $button = $(e.target);
+                        shapes.draw({
+                            relSize: Math.random(),
+                            relX: Math.random(),
+                            relY: Math.random(),
+                            shape: buttonShapes[$button.attr('name')]
+                        });
+                    });
+                    delay(1000, function() {
+                        return $context.trigger('button:click', 'A');
+                    });
+                },
+                leave: function() {
+                    paper.clear();
+                    $context.trigger('slide-panel:toggle', false);
+                    $context.off('click.shape');
+                    return cli.echo('too much, need rest...').then(function() {
+                        return delayDeferred(500);
+                    }).then(function() {
+                        return cli.clear();
+                    });
+                }
+            };
+        };
+
+        createGreetState = function(arg) {
+            var cli, states;
+            states = arg.states, cli = arg.cli;
+            return {
+                name: 'greet',
+                enter: function() {
+                    cli.echo('hello, your name?').then(function() {
+                        return cli.command();
+                    }).then(function(name) {
+                        return cli.echo("play a game, " + name + "?").then(function() {
+                            return cli.command();
+                        });
+                    }).then(function(response) {
+                        var agree;
+                        agree = /^y/i.test(response);
+                        cli.echo(agree ? 'great...' : 'going to force you...').then(function() {
+                            return delay(1000, states.next);
+                        });
+                    });
+                },
+                leave: function() {
+                    cli.clear();
+                }
+            };
+        };
+
+        createOffState = function(arg) {
+            var $canvas, paper, states;
+            states = arg.states, paper = arg.paper, $canvas = arg.$canvas;
+            return {
+                name: 'off',
+                enter: function() {
+                    var power;
+                    power = createPowerButton(paper, $canvas);
+                    power.toggle(true);
+                    $canvas.on('power:on', delayed(300, function() {
+                        power.toggle(false, delayed(600, states.next));
+                    }));
+                },
+                leave: function() {
+                    paper.clear();
+                    $canvas.off('power:on');
+                }
+            };
+        };
+
+        createCLI = function($root, $context) {
+            var api, clear, command, echo, html, ms, state;
+            html = {
+                command: function(command) {
+                    return "&raquo; " + command;
+                },
+                cursor: '<span class="cursor">&marker;</span>',
+                input: '<input type="text" class="invisible">',
+                line: '<div class="line">'
+            };
+            ms = {
+                pause: 500
+            };
+            state = {};
+            state.$buffer = function() {
+                return $root.find('.line');
+            };
+            state.$input = $(html.input).appendTo($root);
+            state.$newLine = function() {
+                return $(html.line).insertBefore(this.$input);
+            };
+            state.beginCommand = function() {
+                this.commandDfd = $.Deferred();
+                this.$line = this.$newLine();
+                delay(ms.pause, (function(_this) {
+                    return function() {
+                        _this.updateCommand();
+                        _this.$line.get(0).scrollIntoView();
+                    };
+                })(this));
+                return this;
+            };
+            state.endCommand = function() {
+                var ref7;
+                if ((ref7 = this.$input) != null) {
+                    ref7.val('');
+                }
+                this.$line = null;
+                this.command = '';
+                this.commandDfd = null;
+                return this;
+            };
+            state.updateCommand = function(arg) {
+                var action, cursor, payload, ref7;
+                ref7 = arg != null ? arg : {}, action = ref7.action, payload = ref7.payload;
+                switch (action) {
+                    case 'add':
+                        this.command += payload;
+                        break;
+                    case 'delete':
+                        this.command = this.command.slice(0, -1);
+                        break;
+                    case 'submit':
+                        delay(ms.pause, (function(_this) {
+                            return function() {
+                                _this.commandDfd.resolve(_this.command);
+                            };
+                        })(this));
+                }
+                cursor = action === 'submit' ? '' : html.cursor;
+                this.$line.html("" + (html.command(this.command)) + cursor);
+                return this;
+            };
+            state.endCommand();
+            state.beginInput = function() {
+                this.inputting = true;
+                $context.on('click.cli', (function(_this) {
+                    return function() {
+                        _this.$input.focus();
+                    };
+                })(this));
+                this.$input.focus().keyboardHandling({
+                    onDelete: (function(_this) {
+                        return function() {
+                            _this.updateCommand({
+                                action: 'delete'
+                            });
+                        };
+                    })(this),
+                    onEnter: (function(_this) {
+                        return function() {
+                            _this.updateCommand({
+                                action: 'submit'
+                            });
+                        };
+                    })(this),
+                    onChar: (function(_this) {
+                        return function(char) {
+                            _this.updateCommand({
+                                action: 'add',
+                                payload: char
+                            });
+                        };
+                    })(this)
+                });
+                return this;
+            };
+            state.endInput = function() {
+                this.inputting = false;
+                $context.off('click.cli');
+                this.$input.blur().keyboardHandling(false);
+                return this;
+            };
+            state.resetEcho = function() {
+                this.echoDfd = null;
+                return this;
+            };
+            clear = function() {
+                state.$buffer().remove();
+                state.endInput().endCommand();
+                return api;
+            };
+            command = function() {
+                if (state.$line) {
+                    return;
+                }
+                if (!state.inputting) {
+                    state.beginInput();
+                }
+                return state.beginCommand().commandDfd.promise();
+            };
+            echo = function(message) {
+                var $line;
+                $line = state.$newLine();
+                $line.get(0).scrollIntoView();
+                state.endCommand();
+                state.echoDfd = $.Deferred();
+                $line.animateChars({
+                    string: message,
+                    completion: state.echoDfd
+                });
+                return state.echoDfd.promise();
+            };
+            return api = {
+                clear: clear,
+                command: command,
+                echo: echo
+            };
+        };
+
+        createPowerButton = function(paper, $root) {
+            var api, button, center, dot, e, ms, radius, ring, state, toggle;
+            state = {
+                power: false
+            };
+            center = $root.center();
+            radius = {
+                ring: 30,
+                dot: 5
+            };
+            ring = paper.circle(center.x, center.y, radius.ring).addClass('ring').attr('strokeWidth', 2);
+            dot = paper.circle(center.x, center.y, radius.dot).addClass('dot');
+            button = paper.group(ring, dot).addClass('power-button').attr('opacity', 0);
+            ms = 300;
+            e = mina.easeinout;
+            button.hover(function() {
+                ring.animate({
+                    r: radius.ring / 2
+                }, ms, e);
+                dot.animate({
+                    r: radius.dot * 2
+                }, ms, e);
+                state.power = true;
+                delay(ms, function() {
+                    if (state.power !== true) {
+                        return;
+                    }
+                    $root.trigger('power:on');
+                });
+            }, function() {
+                ring.animate({
+                    r: radius.ring
+                }, ms, e);
+                dot.animate({
+                    r: radius.dot
+                }, ms, e);
+                state.power = false;
+            });
+            toggle = function(visible, completion) {
+                var opacity;
+                opacity = visible ? 1 : 0;
+                button.animate({
+                    opacity: opacity
+                }, ms, e, completion);
+            };
+            return api = {
+                toggle: toggle
+            };
+        };
+
+        createShapeDrawer = function(paper, $root) {
+            var api, draw, max, min, round, sqrt;
+            max = Math.max, min = Math.min, round = Math.round, sqrt = Math.sqrt;
+            draw = function(arg) {
+                var cx, cy, el, mx, my, r, relSize, relX, relY, shape, size, stage, x, y;
+                relSize = arg.relSize, relX = arg.relX, relY = arg.relY, shape = arg.shape;
+                relSize = max(.1, relSize / 2);
+                relX = min(.9, max(.1, relX));
+                relY = min(.8, max(.2, relY));
+                stage = $root.innerSize();
+                size = round(stage.w * relSize);
+                x = round((stage.w - size) * relX);
+                mx = x + size;
+                y = round((stage.h - size) * relY);
+                my = y + size;
+                r = size / 2;
+                cx = x + r;
+                cy = y + r;
+                el = (function() {
+                    switch (shape) {
+                        case 'circle':
+                            return paper.circle(cx, cy, r);
+                        case 'square':
+                            return paper.rect(x, y, size, size, 6, 6);
+                        case 'triangle':
+                            return paper.polygon([cx, y + my * (1 - sqrt(3) / 2), mx, my, x, my]);
+                        case 'semicircle':
+                            return paper.path("M" + x + " " + my + ", L" + mx + " " + my + ", A" + r + " " + r + " 0 0 0 " + x + " " + my + ", Z");
+                        default:
+                            throw 'unsupported shape';
+                    }
+                })();
+                el.addClass('shape').attr('strokeWidth', 2);
+                return el;
+            };
+            return api = {
+                draw: draw
+            };
+        };
+
+        initButtons = function($context) {
+            var api;
+            $context.on('button:click', function(e, name) {
+                var $button;
+                $button = $context.find("[type=button][name=" + name + "]");
+                if (!$button.length) {
+                    return;
+                }
+                $button.addClass('hover active');
+                return delay(300, function() {
+                    return $button.trigger('click').removeClass('hover active');
+                });
+            });
+            return api = {};
+        };
+
+        initMainScreen = function($context) {
+            var $canvas, $cli, $root, api, cli, paper, shapes, states;
+            $root = $context.find('.main-screen');
+            $cli = $root.find('[data-module=cli]');
+            $canvas = $root.find('[data-module=canvas]');
+            paper = Snap("#" + ($canvas.attr('id')));
+            cli = createCLI($cli, $root);
+            shapes = createShapeDrawer(paper, $canvas);
+            states = createStateMachine();
+            states.push(createOffState({
+                states: states,
+                paper: paper,
+                $canvas: $canvas
+            }));
+            states.push(createGreetState({
+                states: states,
+                cli: cli
+            }));
+            states.push(createGameState({
+                states: states,
+                shapes: shapes,
+                paper: paper,
+                cli: cli,
+                $context: $context
+            }));
+            states.to('off');
+            return api = {};
+        };
+
+        initSlidePanel = function($context) {
+            var $cover, $inside, $root, api;
+            $root = $context.find('[data-module=slide-panel]');
+            $cover = $root.find('.cover');
+            $inside = $root.find('.inside');
+            $cover.addClass('closed');
+            $cover.on('click', function(e) {
+                if (!$(e.currentTarget).is('.cover')) {
+                    return;
+                }
+                $cover.toggleClass('open closed');
+            });
+            $context.on('slide-panel:toggle', function(e, visible) {
+                $cover.toggleClass('open', visible).toggleClass('closed', !visible);
+            });
+            return api = {};
+        };
+
+    }).call(this);
+    </script>
+</body>
+
+</html>

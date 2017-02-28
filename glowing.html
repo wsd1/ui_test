@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html class="seq-ui">
+
+<head>
+    
+
+    <title>SVG Illustrator Test</title>
+
+    <style>
+
+    html {
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        padding: 1em;
+    }
+    
+    .seq-ui {
+        background: #272927;
+        color: #111;
+        font-family: monospace;
+    }
+    
+    .seq-ui * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: default;
+    }
+    
+    .seq-ui a {
+        cursor: pointer;
+        text-decoration: none;
+        color: #333;
+        -webkit-transition: color 0.3s ease;
+        transition: color 0.3s ease;
+    }
+    
+    .seq-ui a:hover {
+        color: #fff;
+    }
+    
+    .seq-ui section {
+        margin: 1em;
+        padding: 1em;
+    }
+    
+    .seq-ui #wrap {
+        padding: 1em;
+    }
+    
+    .seq-ui h3 {
+        color: #444;
+    }
+    
+    .seq-ui button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: none;
+    }
+    
+    .seq-ui button:focus {
+        outline: none;
+        border-color: #99ccaa;
+        -webkit-animation: focused 0.5s ease;
+        animation: focused 0.5s ease;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+        -webkit-animation-direction: alternate;
+        animation-direction: alternate;
+    }
+    
+    @-webkit-keyframes focused {
+        to {
+            border-color: #336655;
+        }
+    }
+    
+    @keyframes focused {
+        to {
+            border-color: #336655;
+        }
+    }
+    
+    .seq-ui .control {
+        margin: 3px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    
+    .seq-ui .pad {
+        background: #222;
+        background-image: -webkit-radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+        width: 40px;
+        height: 40px;
+        border: 2px solid #333;
+        border-radius: 5px;
+        color: #888;
+        -webkit-transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    }
+    
+    .seq-ui .pad:hover {
+        background-color: #530;
+        border-color: #ff9900;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    }
+    
+    .seq-ui .pad.active {
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+        color: #fff;
+        -webkit-transform: translateY(2px);
+        transform: translateY(2px);
+    }
+    
+    .seq-ui .meter {
+        width: 40px;
+        height: 6px;
+        background: #111;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+    }
+    
+    .seq-ui .meter.vertical {
+        -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+    }
+    
+    .seq-ui .meter span {
+        display: block;
+        background: #22ff55;
+        height: 100%;
+        opacity: 1;
+        box-shadow: 0 0 10px #22ff55;
+        -webkit-transform-origin: 0 50%;
+        transform-origin: 0 50%;
+    }
+    
+    .seq-ui .meter span.max {
+        background: #ff2255;
+        box-shadow: 0 0 10px #ff2255;
+    }
+    
+    .seq-ui .meter span.anim {
+        -webkit-animation: equalize 1s linear;
+        animation: equalize 1s linear;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+    }
+    
+    .seq-ui .meter span.fade {
+        -webkit-transition: -webkit-transform 0.3s linear;
+        transition: -webkit-transform 0.3s linear;
+        transition: transform 0.3s linear;
+        transition: transform 0.3s linear, -webkit-transform 0.3s linear;
+    }
+    
+    .seq-ui .metronome {
+        width: 40px;
+        height: 20px;
+        background: #111;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+        font-size: 0;
+    }
+    
+    .seq-ui .metronome span {
+        display: inline-block;
+        margin: 0;
+        height: 100%;
+        width: 25%;
+    }
+    
+    .seq-ui .metronome span.active {
+        box-shadow: 0 0 10px #2255ff;
+        background: #2255ff;
+    }
+    
+    .seq-ui .mute {
+        width: 15px;
+        height: 15px;
+        background: #111;
+        border-radius: 50%;
+        border: 1px solid #222;
+        box-shadow: inset 0 0 10px #111, 0 0 2px rgba(0, 0, 0, 0.4);
+        -webkit-transition: border-color 0.3s ease;
+        transition: border-color 0.3s ease;
+    }
+    
+    .seq-ui .mute:hover {
+        border-color: #ff9900;
+    }
+    
+    .seq-ui .mute.active {
+        background: -webkit-radial-gradient(#22ff55, rgba(0, 0, 0, 0) 50%);
+        background: radial-gradient(#22ff55, rgba(0, 0, 0, 0) 50%);
+        box-shadow: inset 0 0 10px #111, 0 0 2px #22ff55;
+    }
+    
+    .seq-ui .seq-row {
+        font-size: 0;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    
+    .seq-ui .seq-row.inline {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 1em;
+    }
+    
+    .seq-ui .seq-row span {
+        display: inline-block;
+        margin: 1px;
+        width: 15px;
+        height: 30px;
+        background: #181818 -webkit-linear-gradient(#282828, transparent);
+        background: #181818 linear-gradient(#282828, transparent);
+        border: 2px solid #222;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
+    }
+    
+    .seq-ui .seq-row span.seq-step-measure {
+        background: #222 -webkit-linear-gradient(#333, transparent);
+        background: #222 linear-gradient(#333, transparent);
+    }
+    
+    .seq-ui .seq-row span.seq-note {
+        background: #444 -webkit-linear-gradient(#7c8, transparent);
+        background: #444 linear-gradient(#7c8, transparent);
+        border-color: #565;
+    }
+    
+    .seq-ui .seq-row span.seq-note.seq-playhead {
+        -webkit-transform: translateY(2px);
+        transform: translateY(2px);
+    }
+    
+    .seq-ui .seq-row span.seq-playhead {
+        border-color: #2255ff;
+        box-shadow: 0 0 30px #2255ff;
+    }
+    
+    .seq-ui .seq-row span:hover {
+        border-color: #ff9900;
+    }
+    
+    .seq-ui .channel {
+        display: inline-block;
+        white-space: nowrap;
+        vertical-align: middle;
+        border: 1px solid #111;
+        padding: 5px 10px;
+        background: -webkit-linear-gradient(#222, rgba(0, 0, 0, 0.4));
+        background: linear-gradient(#222, rgba(0, 0, 0, 0.4));
+    }
+    
+    @-webkit-keyframes equalize {
+        0% {
+            -webkit-transform: scaleX(0.2);
+            transform: scaleX(0.2);
+        }
+        25% {
+            -webkit-transform: scaleX(0.7);
+            transform: scaleX(0.7);
+        }
+        35% {
+            -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+        }
+        40% {
+            -webkit-transform: scaleX(0.6);
+            transform: scaleX(0.6);
+        }
+        50% {
+            -webkit-transform: scaleX(0.1);
+            transform: scaleX(0.1);
+        }
+        55% {
+            -webkit-transform: scaleX(0.9);
+            transform: scaleX(0.9);
+        }
+        60% {
+            -webkit-transform: scaleX(0.3);
+            transform: scaleX(0.3);
+        }
+        75% {
+            -webkit-transform: scaleX(0.8);
+            transform: scaleX(0.8);
+        }
+        80% {
+            -webkit-transform: scaleX(0.4);
+            transform: scaleX(0.4);
+        }
+        90% {
+            -webkit-transform: scaleX(0.9);
+            transform: scaleX(0.9);
+        }
+        100% {
+            -webkit-transform: scaleX(0.2);
+            transform: scaleX(0.2);
+        }
+    }
+    
+    @keyframes equalize {
+        0% {
+            -webkit-transform: scaleX(0.2);
+            transform: scaleX(0.2);
+        }
+        25% {
+            -webkit-transform: scaleX(0.7);
+            transform: scaleX(0.7);
+        }
+        35% {
+            -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+        }
+        40% {
+            -webkit-transform: scaleX(0.6);
+            transform: scaleX(0.6);
+        }
+        50% {
+            -webkit-transform: scaleX(0.1);
+            transform: scaleX(0.1);
+        }
+        55% {
+            -webkit-transform: scaleX(0.9);
+            transform: scaleX(0.9);
+        }
+        60% {
+            -webkit-transform: scaleX(0.3);
+            transform: scaleX(0.3);
+        }
+        75% {
+            -webkit-transform: scaleX(0.8);
+            transform: scaleX(0.8);
+        }
+        80% {
+            -webkit-transform: scaleX(0.4);
+            transform: scaleX(0.4);
+        }
+        90% {
+            -webkit-transform: scaleX(0.9);
+            transform: scaleX(0.9);
+        }
+        100% {
+            -webkit-transform: scaleX(0.2);
+            transform: scaleX(0.2);
+        }
+    }
+    
+    .seq-ui .transport button {
+        background: #222;
+        background-image: -webkit-radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+        background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+        width: 40px;
+        border: 2px solid #333;
+        border-radius: 5px;
+        color: #888;
+        -webkit-transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    }
+    
+    .seq-ui .transport button:hover {
+        background-color: #530;
+        border-color: #ff9900;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+        color: #fff;
+    }
+    
+    .seq-ui .transport button.active {
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+        color: #fff;
+        -webkit-transform: translateY(2px);
+        transform: translateY(2px);
+    }
+    
+    .seq-ui .transport button.transport-play {
+        color: #22ff55;
+    }
+    
+    .seq-ui .transport-tempo {
+        width: 40px;
+        background: #222;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+        padding: 2px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: 1px solid #111;
+        color: #22ff55;
+        text-shadow: 0 0 10px #22ff55;
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <h1>Codepen演示 发光控件效果</h1>
+    <div id="wrap" class="">
+        <section id="channels">
+            <h3>Channels</h3>
+            <div class="channel">
+                <button class="control mute"></button>
+                <button class="control pad">S</button>
+                <div class="control meter vertical">
+                    <span class="max"></span>
+                </div>
+                <div class="seq-row inline">
+                    <span class="seq-note seq-step-measure"></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span class="seq-note seq-step-measure"></span>
+                    <span></span>
+                    <span class="seq-note"></span>
+                    <span></span>
+                    <span class="seq-step-measure"></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span class="seq-step-measure"></span>
+                    <span class="seq-note seq-playhead"></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="sep"></div>
+            <div class="channel">
+                <button class="control mute active"></button>
+                <button class="control pad">K</button>
+                <div class="control meter vertical">
+                    <span class="anim"></span>
+                </div>
+                <div class="seq-row inline">
+                    <span class="seq-note seq-step-measure"></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span class="seq-note seq-step-measure"></span>
+                    <span></span>
+                    <span class="seq-note"></span>
+                    <span></span>
+                    <span class="seq-step-measure"></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span class="seq-step-measure"></span>
+                    <span class="seq-playhead"></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </section>
+        <section id="pads">
+            <h3>Pads</h3>
+            <button class="control pad">K</button>
+            <button class="control pad active">S</button>
+            <button class="control pad">Ho</button>
+            <button class="control pad">Hc</button>
+            <button class="control pad">Cr</button>
+            <button class="control pad">Cc</button>
+            <button class="control pad">Th</button>
+            <button class="control pad">Tm</button>
+            <button class="control pad">Tl</button>
+        </section>
+        <section id="meters">
+            <h3>Metering</h3>
+            <div class="control meter">
+                <span></span>
+            </div>
+            <div class="control meter">
+                <span class="max"></span>
+            </div>
+            <div class="control metronome">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </section>
+        <section id="toggles">
+            <h3>Toggles</h3>
+            <button class="control mute"></button>
+            <button class="control mute active"></button>
+        </section>
+        <section id="sequencer">
+            <h3>Sequencing</h3>
+            <div class="seq-row">
+                <span class="seq-step-measure"></span>
+                <span class="seq-note"></span>
+                <span></span>
+                <span class="seq-note"></span>
+                <span class="seq-step-measure"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="seq-row">
+                <span class="seq-note seq-step-measure"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span class="seq-note seq-step-measure"></span>
+                <span></span>
+                <span class="seq-note"></span>
+                <span></span>
+            </div>
+        </section>
+        <section id="transport">
+            <div class="module transport">
+                <h3>Transport</h3>
+                <button class="transport-play" title="Play">&#9658;</button>
+                <button class="transport-stop" title="Stop">&#9632;</button>
+                <input type="text" size="3" min="30" max="250" value="130" class="transport-tempo" />
+            </div>
+        </section>
+    </div>
+    <script type="text/javascript" src=""></script>
+    <script>
+    // TODO: write a Web Audio API drum machine. :)
+
+    var Metronome = (function() {
+
+        var bits, tempo, ticker,
+            seg = 0;
+
+        function _start(el, bpm) {
+            bits = el.querySelectorAll('span');
+            tempo = 60000 / bpm;
+            clearInterval(ticker);
+            ticker = setInterval(function() {
+                bits[seg].classList.remove('active');
+                seg++;
+                if (seg > 3) seg = 0;
+                bits[seg].classList.add('active');
+            }, tempo)
+        }
+
+        return {
+            start: _start
+        }
+    })();
+
+    Metronome.start(document.querySelector('.metronome'), 100);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SVG Illustrator Test</title> 
+    </head>
+    <body>
+        <h1>点击控件的圆圈内数值可以触发事件</h1>
+        <object data="meter_1.svg" type="image/svg+xml"
+         id="alphasvg" width="100%" height="100%"></object>
+
+        <script>
+            var a = document.getElementById("alphasvg");
+
+            // It's important to add an load event listener to the object,
+            // as it will load the svg doc asynchronously
+            a.addEventListener("load",function(){
+
+                // get the inner DOM of alpha.svg
+                var svgDoc = a.contentDocument;
+                // get the inner element by id
+                var delta = svgDoc.getElementById("XMLID_44_");
+                // add behaviour
+                delta.addEventListener("mousedown",function(){
+                        alert('hello world!')
+                }, false);
+            }, false);
+        </script>
+    </body>
+</html>
