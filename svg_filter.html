@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SVG Illustrator Test</title>
+    <style>
+    body{
+        background-color: #272927;
+    }
+
+    h1{
+        color: yellow;
+    }
+
+    </style>
+</head>
+
+<body>
+    <h1>演示snap.svg导入svg数据，并且操作其中元素添加效果的过程</h1>
+    <div id="drawing"></div>
+    <p>尾部</p>
+    <script type="text/javascript" src="js/snap.svg-min.js"></script>
+
+
+
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script>
+    $(function() {
+
+        Snap.load("meter2.svg", function(svg) {
+            this.appendChild(svg.node);
+
+
+
+            var svg_ele = Snap.select("#glow_circle");
+
+            //console.log('circleFromDom2', circleFromDom2);
+            //circleFromDom2.animate({ fill: 'red' }, 2000);
+
+
+            var f = svg_ele.paper.filter(Snap.filter.shadow(0, 0, 2, "red"))
+
+            var c = svg_ele.attr({
+                stroke: "red",
+                filter: f
+            });
+
+
+
+            svg_ele = Snap.select("#XMLID_949_");
+
+            //console.log('circleFromDom2', circleFromDom2);
+            //circleFromDom2.animate({ fill: 'red' }, 2000);
+
+
+            f = svg_ele.paper.filter(Snap.filter.shadow(0, 0, 2, "#22ff55"))
+
+            var c = svg_ele.attr({
+                stroke: "#22ff55",
+                filter: f
+            });
+
+
+
+
+
+
+
+
+        }, document.getElementById("drawing"));
+
+
+
+    })
+    </script>
+</body>
+
+</html>

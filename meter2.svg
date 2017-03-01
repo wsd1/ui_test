@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 63.8 74.6" style="enable-background:new 0 0 63.8 74.6;" xml:space="preserve">
+<path id="XMLID_966_" style="opacity:0.8;" d="M0,42.7l0-31.9h31.9c17.6,0,31.9,14.3,31.9,31.9c0,17.6-14.3,31.9-31.9,31.9
+	S0,60.3,0,42.7z"/>
+<circle id="glow_circle" style="fill:none;stroke:#FFFFFF;stroke-width:0.5;stroke-miterlimit:10;" cx="31.9" cy="42.7" r="28.2"/>
+<circle id="XMLID_960_" style="fill:none;stroke:#FFFFFF;stroke-width:8;stroke-miterlimit:10;stroke-opacity:8.000000e-02;" cx="31.9" cy="42.7" r="21.2"/>
+<text id="XMLID_959_" transform="matrix(1 0 0 1 20.2907 45.4062)" style="fill:#FFFFFF; font-family:'ArialMT'; font-size:12px;">3.22</text>
+<path id="XMLID_958_" d="M0,10.9L0,0l34.6,0c3.4,0,6.1,2.4,6.1,5.5c0,3-2.7,5.5-6.1,5.5H0z"/>
+<text id="XMLID_957_" transform="matrix(1 0 0 1 2.1689 8.4923)" style="fill:#FFFFFF; font-family:'ArialMT'; font-size:8px;">DELAY</text>
+<path id="XMLID_949_" style="fill:none;stroke:#EFEFEF;stroke-width:8;stroke-miterlimit:10;" d="M32,63.9c3.7,0,7.4-1,10.6-2.8
+	c3.2-1.9,5.9-4.5,7.8-7.8s2.8-6.9,2.8-10.6c0-3.7-1-7.4-2.8-10.6"/>
+<circle id="XMLID_945_" style="fill:#FFFFFF;" cx="35.2" cy="5.3" r="3.2"/>
+<path id="XMLID_943_" d="M36.6,5.8h-2.8c-0.2,0-0.5-0.2-0.5-0.5V5.2c0-0.2,0.2-0.5,0.5-0.5h2.8C36.8,4.8,37,5,37,5.2v0.2
+	C37,5.6,36.8,5.8,36.6,5.8z"/>
+<text id="XMLID_942_" transform="matrix(1 0 0 1 21.3864 52.9442)" style="fill:#FFFFFF; font-family:'ArialMT'; font-size:6px;">seconds</text>
+<rect id="XMLID_941_" x="31.1" y="59.9" width="1.5" height="8"/>
+<g id="XMLID_937_">
+	<circle id="XMLID_940_" style="fill:#F7F8F8;" cx="7.2" cy="17.9" r="4.6"/>
+	<path id="XMLID_939_" style="fill-rule:evenodd;clip-rule:evenodd;" d="M6,18.3l1.1,0l-1.9-2.1l-1.9,2.1l1.1,0
+		c0.3,2.5,3.2,2.8,3.2,2.8C5.6,20.3,6,18.3,6,18.3z"/>
+	<path id="XMLID_938_" style="fill-rule:evenodd;clip-rule:evenodd;" d="M6.6,14.6c2,0.9,1.6,2.8,1.6,2.8l-1.1,0L9,19.5l1.9-2.1
+		l-1.1,0C9.6,14.9,6.6,14.6,6.6,14.6z"/>
+</g>
+</svg>
